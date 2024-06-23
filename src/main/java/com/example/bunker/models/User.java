@@ -10,13 +10,15 @@ import java.util.Collection;
 @Getter
 @Setter
 public class User {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    @Column(name="id")
+    private Integer id;
+    @Column(name="username")
     private String username;
+    @Column(name="password")
     private String password;
+    @Column(name="enabled")
     private boolean enabled;
 
     @ElementCollection(fetch = FetchType.EAGER)
