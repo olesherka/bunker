@@ -1,7 +1,6 @@
 package com.example.bunker.service;
 
 
-import com.example.bunker.encoder.PasswordEncoderUtil;
 import com.example.bunker.models.User;
 import com.example.bunker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,12 +17,14 @@ import java.util.Optional;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
-    private final PasswordEncoderUtil passwordEncoderUtil;
+    private final PasswordEncoder passwordEncoder; // Внедряем PasswordEncoder
 
-    public UserService(UserRepository userRepository, PasswordEncoderUtil passwordEncoderUtil) {
+    @Autowired
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
-        this.passwordEncoderUtil = passwordEncoderUtil;
+        this.passwordEncoder = passwordEncoder;
     }
+
 
     public List<User> getAllUsers() {
         return userRepository.findAll();
@@ -34,7 +35,7 @@ public class UserService implements UserDetailsService {
     }
 
     public User saveUser(User user) {
-        user.setPassword(passwordEncoderUtil.encode(user.getPassword()));
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.setEnabled(true);
         user.setRoles(List.of("ROLE_USER"));
         return userRepository.save(user);
