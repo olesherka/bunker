@@ -14,6 +14,10 @@ import javax.sql.DataSource;
 
 @Configuration
 public class SecurityConfig {
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
     @Autowired
     private UserDetailsService userDetailsService;
@@ -34,10 +38,5 @@ public class SecurityConfig {
                         .permitAll()
                 );
         return http.build();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 }

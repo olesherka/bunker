@@ -9,10 +9,11 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer> {
-    @Query(value = "SELECT u FROM User u WHERE u.id = :id")
+    @Query(value = "SELECT u FROM User u WHERE LOWER(u.username) = LOWER(:username)")
     User findByUsername(@Param("username") String username);
 
     @Transactional
@@ -21,7 +22,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query(value = "SELECT * FROM User u", nativeQuery = true)
     List<User> getAllUsers();
 
-    @Query(value = "SELECT u FROM User u WHERE u.id = :id")
-    User  findById(@Param("user_id") int id);
+    Optional<User> findById(Integer id);
+
 }
 
