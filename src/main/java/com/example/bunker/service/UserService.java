@@ -2,6 +2,7 @@ package com.example.bunker.service;
 
 
 import com.example.bunker.models.User;
+import com.example.bunker.models.UserDetailsImpl;
 import com.example.bunker.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -47,6 +48,10 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return null;
+        User user = userRepository.findByUsername(username);
+        if (user == null) {
+            throw new UsernameNotFoundException("Пользователь не найден: " + username);
+        }
+        return new UserDetailsImpl(user);
     }
 }
